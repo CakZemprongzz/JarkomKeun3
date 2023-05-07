@@ -18,7 +18,7 @@ print(response.decode()) # Print the HTTP response message
 if response.decode().startswith('HTTP/1.1 200 OK'): # Save the content of the requested file to a local file
     with open(filename, 'wb') as f:
         while True:
-            data = clientSocket.recv(4096)
+            data = clientSocket.recv(1024)
             if not data:
                 break
             f.write(data)
