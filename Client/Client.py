@@ -13,10 +13,10 @@ clientSocket.send(request.encode())
 
 response = clientSocket.recv(1024)
 
-# Print the HTTP response message
+
 print(response.decode())
 
-# Print the content of the requested file, if available
+
 if response.decode().startswith('HTTP/1.1 200 OK'):
     filedata = b''
     while True:
