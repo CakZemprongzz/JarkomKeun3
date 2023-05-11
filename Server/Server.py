@@ -21,11 +21,10 @@ while True:
             outputdata = f.read()
         print('Output data length:', len(outputdata))
         connectionSocket.send("HTTP/1.1 200 OK\r\n".encode())
+        outputdataString = str(len(outputdata))
+        connectionSocket.send(outputdataString.encode())    
         content_type, encoding = mimetypes.guess_type(filename)
         print('Content-Type:', content_type)
-        connectionSocket.send(f"Content-Type: {content_type}\r\n".encode())
-        connectionSocket.send(f"Content-Length: {len(outputdata)}\r\n".encode())
-        connectionSocket.send("\r\n".encode())
         connectionSocket.sendall(outputdata)
         connectionSocket.close()
     except IOError:     #Send response message if the file not found

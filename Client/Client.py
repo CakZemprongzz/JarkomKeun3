@@ -1,7 +1,7 @@
 from socket import *
 
-serverName = input('Enter the IP : ')
-serverPort = int(input('Enter the Port : '))
+serverName = 'localhost' #input('Enter the IP : ')
+serverPort = 12000 #int(input('Enter the Port : '))
 
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName,serverPort))
@@ -16,9 +16,10 @@ response = clientSocket.recv(1024)
 print(response.decode()) # Print the HTTP response message
 
 if response.decode().startswith('HTTP/1.1 200 OK'): # Save the content of the requested file to a local file
+    responseData = clientSocket.recv(1024)
     with open(filename, 'wb') as f:
         while True:
-            data = clientSocket.recv(1024)
+            data = clientSocket.recv(int(responseData.decode()))
             if not data:
                 break
             f.write(data)
