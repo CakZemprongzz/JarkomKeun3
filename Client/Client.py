@@ -15,13 +15,17 @@ while True:  # Start an infinite loop
     if status == 'retrieve':  # If retrieving a file from the server
         filename = input('Enter the name of the file you want to retrieve: ')  # Input the file name to retrieve
         request = f"GET /{filename} HTTP/1.1\r\nHost: {serverName}\r\n\r\n"  # Create the HTTP GET request
+
         clientSocket.send(request.encode())  # Send the request to the server
+
         response = clientSocket.recv(1024)  # Receive the response from the server
+
         print(response.decode())  # Print the HTTP response message
         if response.decode().startswith('HTTP/1.1 200 OK'):  # If the response indicates success (file found)
             responseData = clientSocket.recv(1024)  # Receive the file data from the server
             with open(filename, 'wb') as f:  # Open a file to save the received data
                 while True:  # Loop to receive and write the file data
+                    
                     data = clientSocket.recv(int(responseData.decode()))  # Receive data of specified length
                     if not data:  # If no more data is received, break the loop
                         break
@@ -32,8 +36,8 @@ while True:  # Start an infinite loop
     elif status == 'send':  # If sending a file to the server
         try:
             filename = input('Enter the name of the file you want to send: ')  # Input the file name to send
-            filename = '/' + filename  # Prepend a forward slash to the filename
-            with open(filename[1:], 'rb') as f:  # Open the file in binary mode for reading
+            filename1 = '/' + filename  # Prepend a forward slash to the filename
+            with open(filename1[1:], 'rb') as f:  # Open the file in binary mode for reading
                 outputdata = f.read()  # Read the content of the file
             message = f"POST {filename} HTTP/1.1\r\nHost: {serverName}\r\nContent-Length: {outputdata}\r\n\r\n"  # Create the HTTP POST request
             clientSocket.send(message.encode())  # Send the request to the server
