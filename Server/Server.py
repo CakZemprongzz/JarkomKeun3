@@ -39,7 +39,7 @@ while True:
             connectionSocket.close()  # Close the connection socket
 
     elif status.decode().startswith('send'):  # If status is "send"
-        print('Ready to retrieve')
+        print('Ready to retrieve...')
         message = connectionSocket.recv(1024).decode()  # Receive the message from the client
         filename = message.split()[1]  # Extract the filename from the message
         print(filename)
