@@ -27,8 +27,6 @@ while True:
             if int(dataLength) > 100 * 1024 * 1024:  # Check if the file size exceeds 100MB
                 raise IOError("File size exceeds the limit") #Raising to IO Error because the file size exceeds the limit
             connectionSocket.send("HTTP/1.1 200 OK\r\n".encode())  # Send an OK response to the client
-            dataLength = str(len(outputdata))  # Convert the length of the output data to a string
-            connectionSocket.send(dataLength.encode())  # Send the length of the output data length to the client
             content_type, encoding = mimetypes.guess_type(filename)  # Guess the content type and encoding
             connectionSocket.sendall(outputdata)  # Send the file data to the client
             connectionSocket.close()  # Close the connection socket

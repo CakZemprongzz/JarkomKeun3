@@ -2,11 +2,16 @@ from socket import *  # Importing the necessary modules
 import mimetypes  # Importing the mimetypes module
 
 while True:  # Start an infinite loop
-    serverName = 'localhost'  # Server name or IP address 
-    serverPort = 12000  # Server port number
+    serverName = str(input("Input the IP Address : ")) # Server name or IP address 
+    serverPort = int(input("Input the port number : "))  # Server port number
 
     clientSocket = socket(AF_INET, SOCK_STREAM)  # Create a client socket
-    clientSocket.connect((serverName, serverPort))  # Connect to the server
+    
+    try: # Try to connect to the server
+        clientSocket.connect((serverName, serverPort))  # Connect to the server
+    except ConnectionRefusedError: # If and only the port or the IP is wrong
+        print("\nConnection refused! Please check the server name or IP address and port number again!\n")
+        continue  # Continue to the next iteration of the loop
 
     status = input('Retrieve file from server or Send file to the server (Retrieve/Send) : ').lower()  # Choose to retrieve or send a file
     clientSocket.send(status.encode())  # Send the chosen option to the server
@@ -44,6 +49,7 @@ while True:  # Start an infinite loop
             content_type, encoding = mimetypes.guess_type(filename)  # Guess the content type and encoding
             clientSocket.sendall(outputdata)  # Send the file data to the server
             clientSocket.close()  # Close the client socket after sending
+            print("\nFile sent",filename[1:],"!")
         except IOError:  # If the file is not found or too big
             print("\nThe file size is too big, please choose smaller file!") #Inform the user if the file size is too big
             errorMessage = f"HTTP/1.1 404 Not Found\r\nFile not found or exceeds size limit\r\n" #Send HTTP error Message
